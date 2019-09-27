@@ -10,22 +10,19 @@ class UbaikeSpider(CrawlSpider):
     name = 'ubaike'
     allowed_domains = ['ubaike.cn']
     start_urls = ['https://www.ubaike.cn']
+    # start_urls = ['https://www.ubaike.cn/topic/']
+    http_handlestatus_list = [301, 302, 500]
+    meta = {'dont_redirect': True, "http_handlestatus_list": [302]}
 
     rules = (
-        Rule(LinkExtractor(allow=r'.+class_\d+.html'), follow=True),
+        Rule(LinkExtractor(allow=r'.+class_3\d{1}.html'), follow=True),
         # Rule(LinkExtractor(allow=r'/topic/default/\d+.html'), callback='parse_item', follow=True),
         Rule(LinkExtractor(allow=r'.+class_\d+/\d+.html'), callback='parse_item', follow=True),
     )
 
-
     def start_requests(self):
-        yield scrapy.Request(url=self.start_urls[0], callback=self.parse,
-                             meta={
-                                 'dont_filter': True,
-                                 'dont_redirect': True,
-                                 'http_handlestatus_list': [302, 301],
-                                 'allow_redirects':False
-                             })
+        return [scrapy.Request(self.start_urls[0], meta=self.meta)]
+
 
     def parse_item(self, response):
         corp_name = response.xpath(""".//div[@class='content']/a/text()""").extract()
