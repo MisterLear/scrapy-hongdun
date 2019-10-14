@@ -11,17 +11,14 @@ class UbaikeSpider(CrawlSpider):
     allowed_domains = ['ubaike.cn']
     start_urls = ['https://www.ubaike.cn']
     # start_urls = ['https://www.ubaike.cn/topic/']
-    http_handlestatus_list = [301, 302, 500]
-    meta = {'dont_redirect': True, "http_handlestatus_list": [302]}
+    handle_httpstatus_list = [301, 302]
+    meta = {'dont_redirect': True, 'dont_filter': True}
 
     rules = (
-        Rule(LinkExtractor(allow=r'.+class_3\d{1}.html'), follow=True),
+        Rule(LinkExtractor(allow=r'.+class_\d+.html'), follow=True),
         # Rule(LinkExtractor(allow=r'/topic/default/\d+.html'), callback='parse_item', follow=True),
-        Rule(LinkExtractor(allow=r'.+class_\d+/\d+.html'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=r'.+class_\d+[/\d+]*.html'), callback='parse_item', follow=True),
     )
-
-    def start_requests(self):
-        return [scrapy.Request(self.start_urls[0], meta=self.meta)]
 
 
     def parse_item(self, response):

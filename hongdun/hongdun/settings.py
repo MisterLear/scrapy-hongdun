@@ -71,9 +71,9 @@ CONCURRENT_REQUESTS = 3
 # Disable cookies (enabled by default)
 # COOKIES_ENABLED = False
 REDIRECT_ENABLED = False
+
 # RETRY_HTTP_CODES = [500, 503,502, 504, 400, 403, 404, 408, 407, 302]
 HTTPERROR_ALLOWED_CODES = [301, 302]
-
 
 # Override the default request headers:
 DEFAULT_REQUEST_HEADERS = {
@@ -89,9 +89,8 @@ DEFAULT_REQUEST_HEADERS = {
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     'hongdun.middlewares.UserAgentDownloaderMiddleware': 100,
-    'hongdun.middlewares.HttpProxyDownloaderMiddleware': 150,
-    # 'hongdun.middlewares.DealingRedirectDownloaderMiddleware': 200,
-    # 'hongdun.middlewares.RandomDelayDownloaderMiddleware': 250,
+    # 'hongdun.middlewares.HttpProxyDownloaderMiddleware': 150,
+    'hongdun.middlewares.RandomDelayDownloaderMiddleware': 200,
 }
 
 # Configure item pipelines
